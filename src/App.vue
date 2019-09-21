@@ -8,15 +8,16 @@
     <v-toolbar-title>Admin panel</v-toolbar-title>
 
     <v-spacer></v-spacer>
-    <v-toolbar-items>
-      <v-btn flat text>
+      <v-btn text>
+        <v-icon left>person_add</v-icon>
         Link 1
       </v-btn>
 
-      <v-btn flat text>
+      <v-btn text>
+        <v-icon left>person_add</v-icon>
         Link 2
       </v-btn>
-    </v-toolbar-items>
+
   </v-app-bar>
   <v-content>
     <router-view></router-view>

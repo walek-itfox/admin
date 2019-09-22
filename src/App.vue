@@ -31,7 +31,9 @@
 
     </v-app-bar-nav-icon>
 
-    <v-toolbar-title>Admin panel</v-toolbar-title>
+    <v-toolbar-title>
+        <router-link to="/" tag="span" class="pointer">Admin panel</router-link>
+    </v-toolbar-title>
 
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
@@ -80,6 +82,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+  .pointer {
+    cursor: pointer;
+  }
 </style>

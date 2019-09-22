@@ -5,6 +5,7 @@ import Login from '@/components/Auth/Login'
 import Register from '@/components/Auth/Register'
 import Create from '@/components/User/Create'
 import Users from '@/components/User/Users'
+import User from '@/components/User/User'
 
 Vue.use(Router)
 
@@ -29,6 +30,12 @@ export default new Router({
       path: "/users",
       name: "Users",
       component: Users
+    },
+    {
+      path: "/user/:id",
+      props: true,
+      name: "User",
+      component: User
     },
     {
       path: "/create",

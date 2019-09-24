@@ -1,13 +1,27 @@
 <template>
 <v-app>
-  <v-navigation-drawer 
-    app 
+  <v-navigation-drawer
+    app
     temporary
     v-model="drawer"
   >
     <v-list dense>
       <v-subheader>MENU</v-subheader>
-      <v-list-item-group color="primary">
+      <v-list-item-group color="primary" v-if="userLogedIn">
+        <v-list-item
+          v-for="item in linksAuth"
+          :key="item.title"
+          :to="item.url"
+        >
+          <v-list-item-icon>
+            <v-icon v-text="item.icon"></v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.title"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+      <v-list-item-group color="primary" v-else>
         <v-list-item
           v-for="item in links"
           :key="item.title"
@@ -18,6 +32,16 @@
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title v-text="item.title"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item
+          @click="logout"
+        >
+          <v-list-item-icon>
+            <v-icon>how_to_reg</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>LogOut</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -36,8 +60,26 @@
     </v-toolbar-title>
 
     <v-spacer></v-spacer>
-    <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn 
+    <v-toolbar-items class="hidden-sm-and-down" v-if='userLogedIn'>
+      <v-btn
+        text
+        v-for="link in linksAuth"
+        :key="link.title"
+        :to="link.url"
+      >
+        <v-icon left>{{link.icon}}</v-icon>
+        {{link.title}}
+      </v-btn>
+      <v-btn
+        text
+        @click="logout"
+      >
+        <v-icon left>how_to_reg</v-icon>
+        LogOut
+      </v-btn>
+    </v-toolbar-items>
+    <v-toolbar-items class="hidden-sm-and-down" v-else>
+      <v-btn
         text
         v-for="link in links"
         :key="link.title"
@@ -65,7 +107,9 @@ export default {
           icon: "how_to_reg",
           title: "Login",
           url: "/login"
-        },
+        }
+      ],
+      linksAuth: [
         {
           icon: "people",
           title: "Users",
@@ -75,8 +119,24 @@ export default {
           icon: "person_add",
           title: "New user",
           url: "/create"
+        },
+        {
+          icon: "person_add",
+          title: "Events",
+          url: "/events"
         }
       ]
+    }
+  },
+  computed: {
+    userLogedIn () {
+      return this.$store.getters.user != null
+    }
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('logout')
+      this.$router.replace('/login')
     }
   }
 }

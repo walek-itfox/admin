@@ -4,13 +4,12 @@
       <v-flex xs12>
         <v-data-table
           :headers="headers"
-          :items="users"
-          sort-by="login"
+          :items="events"
           class="elevation-1"
         >
           <template v-slot:top>
             <v-toolbar flat color="white">
-              <v-toolbar-title>Users list</v-toolbar-title>
+              <v-toolbar-title>Events list</v-toolbar-title>
               <v-divider
                 class="mx-4"
                 inset
@@ -45,26 +44,22 @@ export default {
   data () {
     return {
       headers: [
-        {
-          text: 'Id',
-          align: 'left',
-          sortable: true,
-          value: 'id'
-        },
-        { text: 'Login', value: 'login' },
-        { text: 'Email', value: 'email' },
-        { text: 'Password', value: 'password', sortable: false },
-        { text: 'Actions', value: 'action', sortable: false }
+        { text: 'Description', value: 'description' }
       ]
     }
   },
   computed: {
-    users () {
-      return this.$store.getters.users
+     events () {
+      return this.$store.getters.events
     }
   },
+  mounted () {
+      this.getEvents()
+    },
   methods: {
-
+      getEvents () {
+          this.$store.dispatch('events')
+      }
   }
 }
 

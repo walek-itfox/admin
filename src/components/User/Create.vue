@@ -19,11 +19,9 @@
                 flat
               >
                 <v-toolbar-title>Create user</v-toolbar-title>
-                
               </v-toolbar>
               <v-form v-model="valid" ref="form" validation>
-              <v-card-text>
-                
+               <v-card-text>
                   <v-text-field
                     label="Login"
                     name="login"
@@ -51,11 +49,10 @@
                     v-model="password"
                     :rules="passwordRules"
                   ></v-text-field>
-                
               </v-card-text>
               <v-card-actions>
                 <div class="flex-grow-1"></div>
-                <v-btn 
+                <v-btn
                   color="primary"
                   @click="onSubmit"
                   :disabled="!valid"
@@ -79,26 +76,25 @@ export default {
       login: '',
       valid: false,
       passwordRules: [
-        v => !!v || 'Password is required',
+        v => !!v || 'Password is required'
       ],
       loginRules: [
-        v => !!v || 'Login is required',
+        v => !!v || 'Login is required'
       ],
       emailRules: [
         v => !!v || 'E-mail is required',
-        v => /.+@.+/.test(v) || 'E-mail must be valid',
+        v => /.+@.+/.test(v) || 'E-mail must be valid'
       ]
     }
   },
   methods: {
     onSubmit () {
-      if(this.$refs.form.validate()) {
+      if (this.$refs.form.validate()) {
         const user = {
           email: this.email,
           password: this.password,
           login: this.login
         }
-        
         this.$store.dispatch('createUser', user)
       }
     }

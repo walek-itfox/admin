@@ -29,7 +29,7 @@ export default {
   actions: {
     createUser ({commit}, payload) {
       payload.id = Math.random()
-      commit('createUser', payload)  
+      commit('createUser', payload)
     }
   },
   getters: {

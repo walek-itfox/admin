@@ -1,53 +1,6 @@
 <template>
 <v-app>
-  <v-navigation-drawer
-    app
-    temporary
-    v-model="drawer"
-  >
-    <v-list dense>
-      <v-subheader>MENU</v-subheader>
-      <v-list-item-group color="primary" v-if="userLogedIn">
-        <v-list-item
-          v-for="item in linksAuth"
-          :key="item.title"
-          :to="item.url"
-        >
-          <v-list-item-icon>
-            <v-icon v-text="item.icon"></v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-      <v-list-item-group color="primary" v-else>
-        <v-list-item
-          v-for="item in links"
-          :key="item.title"
-          :to="item.url"
-        >
-          <v-list-item-icon>
-            <v-icon v-text="item.icon"></v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item
-          @click="logout"
-        >
-          <v-list-item-icon>
-            <v-icon>how_to_reg</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>LogOut</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
-  </v-navigation-drawer>
-  <v-app-bar app dark color="primary">
+  <v-app-bar app dark color="blue-grey darken-4">
     <v-app-bar-nav-icon
       @click="drawer = !drawer"
       class="hidden-md-and-up"
@@ -56,29 +9,37 @@
     </v-app-bar-nav-icon>
 
     <v-toolbar-title>
-        <router-link to="/" tag="span" class="pointer">Admin panel</router-link>
+        <router-link to="/" tag="span" class="pointer">Crypto</router-link>
     </v-toolbar-title>
 
     <v-spacer></v-spacer>
-    <v-toolbar-items class="hidden-sm-and-down" v-if='userLogedIn'>
-      <v-btn
-        text
-        v-for="link in linksAuth"
-        :key="link.title"
-        :to="link.url"
-      >
-        <v-icon left>{{link.icon}}</v-icon>
-        {{link.title}}
+    
+    <v-menu offset-y origin="center center" :nudge-bottom="10" transition="scale-transition" v-if="userLogedIn">
+      <template v-slot:activator="{ on }">
+      <v-btn icon large slot="activator" :ripple="false" v-on="on">
+        <v-avatar size="42px">
+          <img src="https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortFlat&accessoriesType=Sunglasses&hairColor=Black&facialHairType=Blank&clotheType=CollarSweater&clotheColor=Black&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Light"/>
+        </v-avatar>
       </v-btn>
-      <v-btn
-        text
-        @click="logout"
-      >
-        <v-icon left>how_to_reg</v-icon>
-        LogOut
-      </v-btn>
-    </v-toolbar-items>
-    <v-toolbar-items class="hidden-sm-and-down" v-else>
+      
+        </template>
+      <v-list>
+        <v-list-item
+          ripple="ripple"
+          @click="logout">
+          <v-list-item-action>
+            <v-icon>exit_to_app</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Log Out</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      
+    </v-menu>
+    
+    
+    <v-toolbar-items v-if="!userLogedIn">
       <v-btn
         text
         v-for="link in links"
@@ -93,6 +54,25 @@
   <v-content>
     <router-view></router-view>
   </v-content>
+  <template v-if="error">
+      <v-snackbar
+        color="error"
+        :multi-line="true"
+        :timeout="5000"
+        @input="closeError"
+        :value="true"
+      >
+        {{ error }}
+        <v-btn
+          dark
+          text
+          @click="closeError"
+        >
+          Close
+        </v-btn>
+      </v-snackbar>
+    </template>
+
 </v-app>
 </template>
 
@@ -110,33 +90,25 @@ export default {
         }
       ],
       linksAuth: [
-        {
-          icon: "people",
-          title: "Users",
-          url: "/users"
-        },
-        {
-          icon: "person_add",
-          title: "New user",
-          url: "/create"
-        },
-        {
-          icon: "person_add",
-          title: "Events",
-          url: "/events"
-        }
+        
       ]
     }
   },
   computed: {
     userLogedIn () {
-      return this.$store.getters.user != null
+      return this.$store.getters.isAuthenticated
+    },
+    error () {
+      return this.$store.getters.error
     }
   },
   methods: {
     logout () {
       this.$store.dispatch('logout')
       this.$router.replace('/login')
+    },
+    closeError () {
+      this.$store.dispatch('clearError')
     }
   }
 }

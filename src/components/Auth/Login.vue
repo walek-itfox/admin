@@ -14,7 +14,7 @@
           >
             <v-card class="elevation-12">
               <v-toolbar
-                color="primary"
+                color="blue-grey darken-4"
                 dark
                 flat
               >
@@ -44,7 +44,7 @@
               <v-card-actions>
                 <div class="flex-grow-1"></div>
                 <v-btn
-                  color="primary"
+                  color="blue-grey darken-4"
                   @click="onSubmit"
                   :disabled="!valid"
                 >
@@ -81,8 +81,13 @@ export default {
           email: this.email,
           password: this.password
         }
-        this.$store.dispatch('login', user)
-        this.$router.replace('/')
+        this.$store.dispatch('login', {email: user.email, password: user.password})
+        .then (() => {
+          this.$router.push('/')
+        })
+        .catch (err => {
+          console.log(err)
+        })
       }
     }
   }

@@ -1,7 +1,7 @@
 {
-  "name": "frontend",
+  "name": "cryptocurrency",
   "version": "1.0.0",
-  "description": "Simple Admin panel",
+  "description": "",
   "author": "Shekhovtcov Valentin",
   "private": true,
   "scripts": {
@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "firebase": "^6.6.2",
-    "firebase-admin": "^8.6.0",
     "http2": "^3.3.7",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
